@@ -1,0 +1,8 @@
+## Gramática com as regras semânticas
+
+```
+S                   -> EXPRESSION CONTINUE_EXPRESSION
+EXPRESSION          -> ID CONTINUE_EXPRESSION | ( EXPRESSION )
+CONTINUE_EXPRESSION -> OPERATOR EXPRESSION CONTINUE_EXPRESSION | &
+OPERATOR            -> AND | OR
+```

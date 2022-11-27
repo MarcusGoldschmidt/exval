@@ -1,0 +1,37 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: .
+      dockerfile: cmd/api/Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "11139:11139"
+    environment:
+      POSTGRES_CONNECTION_STRING: "host=postgres user=postgres password=postgres port=5432"
+      AUTO_MIGRATION: "true"
+      PORT: 11139
+    links:
+      - "postgres"
+
+  migration:
+    build:
+      context: .
+      dockerfile: cmd/migration/Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "11139:11139"
+    environment:
+      POSTGRES_CONNECTION_STRING: "host=localhost user=postgres password=postgres port=5432"
+    links:
+      - "postgres"

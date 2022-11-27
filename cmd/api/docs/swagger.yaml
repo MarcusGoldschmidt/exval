@@ -1,0 +1,105 @@
+basePath: /
+definitions:
+  controllers.EvaluateResponse:
+    properties:
+      result:
+        type: boolean
+    type: object
+  controllers.ExpressionCreateRequest:
+    properties:
+      expression:
+        type: string
+    required:
+    - expression
+    type: object
+  models.ExpressionModel:
+    properties:
+      created_at:
+        type: string
+      expression:
+        type: string
+      id:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Exval is a system that allows you to evaluate expressions
+  title: Exval API
+  version: "1.0"
+paths:
+  /evaluate/{id}:
+    get:
+      parameters:
+      - description: Expression id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.EvaluateResponse'
+      summary: Evaluate an expression by id
+      tags:
+      - expression
+  /expressions:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ExpressionModel'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: List all expressions
+      tags:
+      - expression
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Expression to create
+        in: body
+        name: expression
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ExpressionCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ExpressionModel'
+        "500":
+          description: Internal Server Error
+      summary: Create a new expression
+      tags:
+      - expression
+  /expressions/{id}:
+    delete:
+      parameters:
+      - description: Expression id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Delete an expression by id
+      tags:
+      - expression
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
